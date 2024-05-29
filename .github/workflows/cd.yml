@@ -1,13 +1,14 @@
-name: ci
+name: cd
 
 on:
-  pull_request:
+  push:
     branches: [main]
 
 jobs:
-  tests:
-    name: Tests
+  Deploy:
+    name: Deploy
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Check out code
@@ -24,5 +25,5 @@ jobs:
         run: staticcheck ./...
       - name: go install github.com/securego/gosec/v2/cmd/gosec@latest
         run: gosec ./...
-
-      
+      - name: Build the app
+        run: ./scripts/buildprod.sh
